@@ -17,6 +17,4 @@ public class FoodListing {
   private String location;
   private LocalDateTime availableUntil;
   private boolean isAvailable;
-
-  // Getters and Setters
 }
