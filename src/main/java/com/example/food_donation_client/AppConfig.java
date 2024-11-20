@@ -1,4 +1,4 @@
-package com.example.food_donation_client.config;
+package com.example.food_donation_client;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.food_donation_client.model;
+package com.example.food_donation_client;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
