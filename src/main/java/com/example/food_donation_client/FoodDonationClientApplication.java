@@ -1,6 +1,5 @@
 package com.example.food_donation_client;
 
-import com.example.food_donation_client.service.FoodListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +19,6 @@ public class FoodDonationClientApplication implements CommandLineRunner {
 	public void run(String... args) {
 		// Call the method in FoodListingService
 		System.out.println("Fetching all available food listings...");
-		foodListingService.getAvailableFoodListings().forEach(System.out::println);
+		foodListingService.getAllAvailableFoodListings().forEach(System.out::println);
 	}
 }

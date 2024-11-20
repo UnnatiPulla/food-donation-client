@@ -1,6 +1,5 @@
-package com.example.food_donation_client.service;
+package com.example.food_donation_client;
 
-import com.example.food_donation_client.model.FoodListing;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +15,7 @@ public class FoodListingService {
     this.restTemplate = restTemplate;
   }
 
-  public List<FoodListing> getAvailableFoodListings() {
+  public List<FoodListing> getAllAvailableFoodListings() {
     String url = "http://localhost:8080/getFoodListings?clientId=" + 4;
     FoodListing[] listings = restTemplate.getForObject(url, FoodListing[].class);
     return Arrays.asList(listings);
