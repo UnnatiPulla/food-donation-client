@@ -1,4 +1,4 @@
-package com.example.food_donation_client;
+package com.coms4156.client;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -7,7 +7,9 @@ import com.google.firebase.auth.AuthErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.gson.JsonObject;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -28,7 +30,7 @@ public class UserAuthentication {
   public void initializeFirebase() {
     try {
       FileInputStream serviceAccount = new FileInputStream(
-          "src/main/java/com/example/food_donation_client/firebase-config.json");
+          "src/main/java/com/coms4156/client/firebase-config.json");
 
       FirebaseOptions options = new FirebaseOptions.Builder()
           .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -221,6 +223,10 @@ public class UserAuthentication {
       firebaseAuth.getUserByEmail(email);
       return true;
     } catch (FirebaseAuthException e) {
+      System.out.println("EXCEPTION THROWN in doesUserExist");
+      System.out.println(e.getMessage());
+      System.out.println(e.getErrorCode());
+
       if (isUserNotFound(e)) {
         return false;
       } else {
