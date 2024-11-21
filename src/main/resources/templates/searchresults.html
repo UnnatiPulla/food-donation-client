@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Food Results</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHb3bdQxJR1FlpiCdCwE4YZhPZj1E4to&libraries=places"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Food Listings</h1>
+
+        <!-- Display a message if there are no listings -->
+        <div th:if="${foodListings.size() == 0}" class="alert alert-warning">
+            <p>No food listings are currently available. Please check back later.</p>
+        </div>
+
+        <!-- Table to display food listings -->
+        <table class="table table-striped" th:if="${foodListings.size() > 0}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Food Type</th>
+                    <th>Quantity</th>
+                    <th>Earliest Pickup Time</th>
+                    <th>Location</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="listing : ${foodListings}">
+                    <td th:text="${listing.id}"></td>
+                    <td th:text="${listing.foodType}"></td>
+                    <td th:text="${listing.quantityListed}"></td>
+                    <td th:text="${listing.formattedPickUpTime}"></td>
+                    <td th:text="${listing.latitude + ', ' + listing.longitude}"></td>
+                    <td>
+                        <button class="btn btn-success" th:onclick="'selectListing(' + ${listing.id} + ')'">Select</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Back button -->
+        <button class="btn btn-primary" onclick="goBack()">Back to Home</button>
+    </div>
+
+    <script>
+        // Function to handle listing selection
+        function selectListing(listingId) {
+            alert("You selected listing ID: " + listingId);
+            // Implement further logic here, such as redirecting or sending a request
+        }
+
+        // Function to navigate back to the home screen
+        function goBack() {
+            window.location.href = "/homescreen";
+        }
+    </script>
+</body>
+</html>

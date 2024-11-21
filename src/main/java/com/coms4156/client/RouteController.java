@@ -1,5 +1,6 @@
 package com.coms4156.client;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,19 @@ public class RouteController {
     @GetMapping("/homescreen")
     public String homescreen() {
         return "homescreen";
+    }
+	
+    @GetMapping("/searchresults")
+    public String searchResults(Model model) {
+      List<FoodListing> listings = foodListingService.getFoodListings();
+	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+      listings.forEach(listing -> {
+        if (listing.getEarliestPickUpTime() != null) {
+            listing.setFormattedPickUpTime(listing.getEarliestPickUpTime().format(formatter));
+        }
+     });
+      model.addAttribute("foodListings", listings); 
+      return "searchresults"; 
     }
 
     @GetMapping("/food-request")
