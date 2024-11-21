@@ -1,11 +1,33 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head> 
-    <title>Food request page (TODO: Change this page!)</title> 
+  <head>
+    <title>Food request page (TODO: Change this page!)</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-    <p>Go to the index <a href="/">here</a></p>
-    <p>Go to the homescreen <a href="/homescreen">here</a></p>
-</body>
+    <script src="js/helpers.js"></script>
+  </head>
+
+  <body>
+    <div class="container" id="c1">
+      <div class="row">
+        <h1>Welcome <span id="user-id"></span>!</h1>
+        <h2>Make Request</h2>
+        <div>
+          <input
+            id="location-input"
+            type="text"
+            placeholder="Enter your location..."
+          >
+          <!-- TODO: write an onclick function that directs to the next page-->
+          <button
+            id="search-button"
+            class="btn btn-primary"
+            onclick="ONCLICK_TOWRITE()"
+          >
+            Search
+          </button>
+        </div>
+        <div id="map"></div>
+      </div>
+    </div>
+  </body>
 </html>
