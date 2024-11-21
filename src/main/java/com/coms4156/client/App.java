@@ -16,6 +16,7 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws IOException {
+
         System.out.println("Fetching all food listings:");
         MainController mainController = new MainController(restTemplate);
         for (FoodListing f: mainController.getFoodListings()){
