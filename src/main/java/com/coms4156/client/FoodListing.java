@@ -8,13 +8,16 @@ import java.time.LocalDateTime;
 
 @Entity
 public class FoodListing {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private Long id;
 
     private String foodType;
     private int quantityListed;
     private LocalDateTime earliestPickUpTime;
     private float latitude;
     private float longitude;
+    private String formattedPickUpTime;
 
     public String getFoodType() {
         return foodType;
@@ -25,10 +28,19 @@ public class FoodListing {
     public LocalDateTime getEarliestPickUpTime() {
         return earliestPickUpTime;
     }
+    public String getFormattedPickUpTime() {
+        return formattedPickUpTime;
+    }
+    public void setFormattedPickUpTime(String formattedPickUpTime) {
+        this.formattedPickUpTime = formattedPickUpTime;
+    }
     public float getLatitude() {
         return latitude;
     }
     public float getLongitude() {
         return longitude;
     }
+	public Long getId() {
+    return id;
+	}
 }

@@ -18,20 +18,20 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws IOException {
-        UserAuthentication userAuth = new UserAuthentication();
-        // Try to register a user
-        System.out.println("Registering a new user...");
-        JsonObject regResult = userAuth.registerUser("TEST_USER2", "TEST_PW");
-        System.out.println("Result: " + regResult);
+        // UserAuthentication userAuth = new UserAuthentication();
+        // // Try to register a user
+        // System.out.println("Registering a new user...");
+        // JsonObject regResult = userAuth.registerUser("TEST_USER2", "TEST_PW");
+        // System.out.println("Result: " + regResult);
 
-        // Try to authenticate a user
-        System.out.println("Authenticating users...");
-        // Should be ok
-        JsonObject authResult = userAuth.authenticateUser("TEST_USER2", "TEST_PW");
-        System.out.println("Result: " + authResult);
-        // Should fail
-        JsonObject authResult2 = userAuth.authenticateUser("TEST_USER2", "Talksjflka");
-        System.out.println("Result: " + authResult2);
+        // // Try to authenticate a user
+        // System.out.println("Authenticating users...");
+        // // Should be ok
+        // JsonObject authResult = userAuth.authenticateUser("TEST_USER2", "TEST_PW");
+        // System.out.println("Result: " + authResult);
+        // // Should fail
+        // JsonObject authResult2 = userAuth.authenticateUser("TEST_USER2", "Talksjflka");
+        // System.out.println("Result: " + authResult2);
     }
 
 }
