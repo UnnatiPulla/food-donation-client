@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class FoodListingService {
+public class MainController {
 
     private final RestTemplate restTemplate;
 
-    public FoodListingService(RestTemplate restTemplate) {
+    public MainController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -19,4 +19,11 @@ public class FoodListingService {
         FoodListing[] listings = restTemplate.getForObject(url, FoodListing[].class);
         return Arrays.asList(listings);
     }
+
+    public List<FoodListing> getNearbyListings(float latitude, float longitude, int maxDistance) {
+        String url = String.format("http://34.85.143.68:8080/getNearbyListings?clientId=8&latitude=%f&longitude=%f&maxDistance=%d", latitude, longitude, maxDistance);
+        FoodListing[] listings = restTemplate.getForObject(url, FoodListing[].class);
+        return Arrays.asList(listings);
+    }
+
 }
