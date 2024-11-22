@@ -130,6 +130,9 @@
         document.getElementById('loginFormContainer').classList.remove('active');
         document.getElementById('registerFormContainer').classList.add('active');
         document.getElementById('page-title').innerText = 'Register';
+
+        // Clear fields in log in form
+        document.getElementById('loginForm').reset();
     }
 
     // Show log-in form
@@ -137,6 +140,9 @@
         document.getElementById('registerFormContainer').classList.remove('active');
         document.getElementById('loginFormContainer').classList.add('active');
         document.getElementById('page-title').innerText = 'Login';
+
+        // Clear fields in register form
+        document.getElementById('registerForm').reset();
     }
 
     // Log-in form //
@@ -146,7 +152,7 @@
         const username = document.getElementById('login-username').value;
         const password = document.getElementById('login-password').value;
 
-        // Example Fetch API call for login
+        // Call backend API to authenticate user
         const response = await fetch('/login/authenticate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -161,6 +167,8 @@
         } else {
             // Show the message from the API response on failure
             alert(result.message || 'Login failed. Please try again.');
+            // Clear fields
+            document.getElementById('loginForm').reset();
         }
     });
 
@@ -171,7 +179,7 @@
         const username = document.getElementById('register-username').value;
         const password = document.getElementById('register-password').value;
 
-        // Example Fetch API call for registration
+        // Call backend API to register user
         const response = await fetch('/login/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -185,6 +193,8 @@
         } else {
             // Display registration error message or default error in case of internal server error
             alert(result.message || 'Registration failed. Please try again.');
+            // Clear fields
+            document.getElementById('registerForm').reset();
         }
     });
 </script>
