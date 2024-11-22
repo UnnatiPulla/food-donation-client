@@ -1,5 +1,6 @@
 package com.coms4156.client;
 
+import com.google.firebase.auth.AuthErrorCode;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
@@ -49,8 +50,14 @@ public class UserAuthentication {
       result.addProperty("success", false);
       JsonObject responseBody = response.get("responseBody").getAsJsonObject();
       JsonObject err = responseBody.get("error").getAsJsonObject();
+      // Since we use username instead of email,
+      // change error message returned by Firebase Authentication accordingly
+      String errorMessage = err.get("message").getAsString();
+      if (errorMessage.contains("EMAIL")) {
+        errorMessage = errorMessage.replace("EMAIL", "USERNAME");
+      }
       result.addProperty("message",
-          "Failed to register user: " + err.get("message").getAsString());
+          "Failed to register user: " + errorMessage);
     }
 
     return result;
@@ -85,8 +92,14 @@ public class UserAuthentication {
       result.addProperty("success", false);
       JsonObject responseBody = response.get("responseBody").getAsJsonObject();
       JsonObject err = responseBody.get("error").getAsJsonObject();
+      // Since we use username instead of email,
+      // change error message returned by Firebase Authentication accordingly
+      String errorMessage = err.get("message").getAsString();
+      if (errorMessage.contains("EMAIL")) {
+        errorMessage = errorMessage.replace("EMAIL", "USERNAME");
+      }
       result.addProperty("message",
-          "Log-in failed: " + err.get("message").getAsString());
+          "Log-in failed: " + errorMessage);
     }
 
     return result;
