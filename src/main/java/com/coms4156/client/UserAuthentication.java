@@ -1,21 +1,8 @@
 package com.coms4156.client;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthErrorCode;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserAuthentication {
@@ -63,8 +50,14 @@ public class UserAuthentication {
       result.addProperty("success", false);
       JsonObject responseBody = response.get("responseBody").getAsJsonObject();
       JsonObject err = responseBody.get("error").getAsJsonObject();
+      // Since we use username instead of email,
+      // change error message returned by Firebase Authentication accordingly
+      String errorMessage = err.get("message").getAsString();
+      if (errorMessage.contains("EMAIL")) {
+        errorMessage = errorMessage.replace("EMAIL", "USERNAME");
+      }
       result.addProperty("message",
-          "Failed to register user: " + err.get("message").getAsString());
+          "Failed to register user: " + errorMessage);
     }
 
     return result;
@@ -99,8 +92,14 @@ public class UserAuthentication {
       result.addProperty("success", false);
       JsonObject responseBody = response.get("responseBody").getAsJsonObject();
       JsonObject err = responseBody.get("error").getAsJsonObject();
+      // Since we use username instead of email,
+      // change error message returned by Firebase Authentication accordingly
+      String errorMessage = err.get("message").getAsString();
+      if (errorMessage.contains("EMAIL")) {
+        errorMessage = errorMessage.replace("EMAIL", "USERNAME");
+      }
       result.addProperty("message",
-          "Log-in failed: " + err.get("message").getAsString());
+          "Log-in failed: " + errorMessage);
     }
 
     return result;
