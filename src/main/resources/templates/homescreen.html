@@ -19,16 +19,16 @@
         <div>
             <input id="location-input" type="text" placeholder="Enter your location...">
 			<!-- TODO: write an onclick function that directs to the next page-->
-            <button id="search-button" class="btn btn-primary" onclick="ONCLICK_TOWRITE()">Search</button>
+            <button id="search-button" class="btn btn-primary" onclick="begin_search()">Search</button>
         </div>        
 		<div id="map"></div>
     </div>
   </div>
 
   <script>
-    let map;
-    let autocomplete;
-    let marker;
+    var map;
+    var autocomplete;
+    var marker;
 
     function initMap() {
         // Initialize map
@@ -75,6 +75,15 @@
         });
     }
 
+	function begin_search() {
+		const position = marker.getPosition();
+		const latitude = position.lat();
+		const longitude = position.lng();
+	
+		const url = `/searchresults?latitude=${latitude}&longitude=${longitude}`;
+		window.location.href = url;
+	}
+	
     // Load the map after the page loads
     window.onload = initMap;
   </script>
