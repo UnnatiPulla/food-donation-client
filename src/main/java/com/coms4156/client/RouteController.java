@@ -35,6 +35,11 @@ public class RouteController {
       return "searchresults";
     }
 
+	@GetMapping("/quantityrequest")
+	public String quantityRequest() {
+		return "quantityrequest";
+	}
+
     @GetMapping("/food-request")
     public String foodRequest() {
         List<FoodListing> listings = mainController.getFoodListings();
