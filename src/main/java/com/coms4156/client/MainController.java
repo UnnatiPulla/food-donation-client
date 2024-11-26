@@ -2,7 +2,9 @@ package com.coms4156.client;
 
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -24,6 +26,12 @@ public class MainController {
         String url = String.format("http://34.85.143.68:8080/getNearbyListings?clientId=8&latitude=%f&longitude=%f&maxDistance=%d", latitude, longitude, maxDistance);
         FoodListing[] listings = restTemplate.getForObject(url, FoodListing[].class);
         return Arrays.asList(listings);
+    }
+
+    public ResponseEntity<FoodRequest> createFoodRequest(int clientId, int accountId, int listingId, int quantityRequested) {
+        String url = String.format("http://34.85.143.68:8080/api/foodRequests/create?clientId=8&accountId=17&listingId=%d&quantityRequested=%d", listingId, quantityRequested);
+        ResponseEntity<FoodRequest> response = restTemplate.postForEntity(url, null, FoodRequest.class);
+        return response;
     }
 
 }
