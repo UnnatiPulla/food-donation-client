@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
+import org.springframework.http.ResponseEntity;
 import java.util.UUID;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,10 @@ public class App implements CommandLineRunner {
         for (FoodListing f: mainController.getNearbyListings((float)40.7128, (float)-74.006, 1)){
             System.out.println(f.getFoodType());
         }
+
+        System.out.println("Making a request for 2 fruit baskets and printing the request id:");
+        ResponseEntity<FoodRequest> response = mainController.createFoodRequest(8, 17, 13, 2);
+        System.out.println(response.getBody().getRequestId());
 
         UserAuthentication userAuth = new UserAuthentication();
         // Try to register a user
