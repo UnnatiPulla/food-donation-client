@@ -21,7 +21,6 @@
         <table class="table table-striped" th:if="${foodListings.size() > 0}">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Food Type</th>
                     <th>Quantity</th>
                     <th>Earliest Pickup Time</th>
@@ -31,14 +30,21 @@
             </thead>
             <tbody>
                 <tr th:each="listing : ${foodListings}">
-                    <td th:text="${listing.id}"></td>
                     <td th:text="${listing.foodType}"></td>
                     <td th:text="${listing.quantityListed}"></td>
                     <td th:text="${listing.formattedPickUpTime}"></td>
                     <td th:text="${listing.latitude + ', ' + listing.longitude}"></td>
-                    <td>
-                        <button class="btn btn-success" th:onclick="'selectListing(' + ${listing.id} + ')'">Select</button>
-                    </td>
+					<td>
+						<form action="/quantity-request" method="post">
+							<input type="hidden" name="listingId" th:value="${listing.listingId}" />
+							<input type="hidden" name="foodType" th:value="${listing.foodType}" />
+							<input type="hidden" name="quantityListed" th:value="${listing.quantityListed}" />
+							<input type="hidden" name="formattedPickUpTime" th:value="${listing.formattedPickUpTime}" />
+							<input type="hidden" name="latitude" th:value="${listing.latitude}" />
+							<input type="hidden" name="longitude" th:value="${listing.longitude}" />
+							<button type="submit" class="btn btn-success">Select</button>
+						</form>
+					</td>
                 </tr>
             </tbody>
         </table>
@@ -50,13 +56,12 @@
     <script>
         // Function to handle listing selection
         function selectListing(listingId) {
-            alert("You selected listing ID: " + listingId);
-            // Implement further logic here, such as redirecting or sending a request
+			window.location.href = "/quantity-request?listingId=" + listingId;
         }
 
         // Function to navigate back to the home screen
         function goBack() {
-            window.location.href = "/homescreen";
+            window.location.href = "/home";
         }
     </script>
 </body>

@@ -1,17 +1,9 @@
-package com.coms4156.client;
+package com.coms4156.client.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
 public class FoodListing {
-    @Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private Long id;
-
+    private int listingId;
     private String foodType;
     private int quantityListed;
     private LocalDateTime earliestPickUpTime;
@@ -19,6 +11,12 @@ public class FoodListing {
     private float longitude;
     private String formattedPickUpTime;
 
+    public int getListingId() {
+        return listingId;
+    }
+    public void setListingId(int listingId) {
+        this.listingId = listingId;
+    }
     public String getFoodType() {
         return foodType;
     }
@@ -57,7 +55,5 @@ public class FoodListing {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
-	public Long getId() {
-    return id;
-	}
+
 }
