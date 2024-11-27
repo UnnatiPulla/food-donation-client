@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -35,10 +36,26 @@ public class RouteController {
       return "searchresults";
     }
 
-	@GetMapping("/quantityrequest")
-	public String quantityRequest() {
-		return "quantityrequest";
-	}
+    @PostMapping("/quantityrequest")
+    public String quantityResult(
+            @RequestParam("listingId") int listingId,
+            @RequestParam("foodType") String foodType,
+            @RequestParam("quantityListed") int quantityListed,
+            @RequestParam("formattedPickUpTime") String formattedPickUpTime,
+            @RequestParam("latitude") float latitude,
+            @RequestParam("longitude") float longitude,
+            Model model) {
+
+        model.addAttribute("listingId", listingId);
+        model.addAttribute("foodType", foodType);
+        model.addAttribute("quantityListed", quantityListed);
+        model.addAttribute("formattedPickUpTime", formattedPickUpTime);
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
+
+        // Return the request page view
+        return "quantityrequest";
+    }
 
     @GetMapping("/food-request")
     public String foodRequest() {
