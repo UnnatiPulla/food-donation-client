@@ -1,11 +1,13 @@
 package com.coms4156.client;
-
-import java.time.format.DateTimeFormatter;
+import com.coms4156.client.controller.MainController;
+import com.coms4156.client.controller.RouteController;
+import com.coms4156.client.model.FoodListing;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +17,10 @@ import static org.mockito.Mockito.*;
 public class RouteControllerTests {
 
   @Test
-  void testHomescreen() {
+  void testHome() {
     RouteController routeController = new RouteController();
-
-    String viewName = routeController.homescreen();
-
-    assertEquals("homescreen", viewName);
+    String viewName = routeController.home();
+    assertEquals("home", viewName);
   }
 
   @Test
@@ -38,10 +38,9 @@ public class RouteControllerTests {
         .thenReturn(mockListings);
 
     Model modelMock = mock(Model.class);
-
     String viewName = routeController.searchResults(modelMock, 40.7128f, -74.006f);
 
-    assertEquals("searchresults", viewName);
+    assertEquals("search-results", viewName);
     verify(modelMock, times(1)).addAttribute(eq("foodListings"), eq(mockListings));
     assertEquals(listing.getEarliestPickUpTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
         listing.getFormattedPickUpTime());
@@ -57,55 +56,39 @@ public class RouteControllerTests {
         .thenReturn(new ArrayList<>());
 
     Model modelMock = mock(Model.class);
-
     String viewName = routeController.searchResults(modelMock, 40.7128f, -74.006f);
 
-    assertEquals("searchresults", viewName);
+    assertEquals("search-results", viewName);
     verify(modelMock, times(1)).addAttribute(eq("foodListings"), eq(new ArrayList<>()));
   }
 
   @Test
   void testQuantityRequest() {
     RouteController routeController = new RouteController();
+    Model modelMock = mock(Model.class);
 
-    String viewName = routeController.quantityRequest();
+    String viewName = routeController.quantityRequest(
+        1, "Bread", 10, "2024-12-01 12:00", 40.7128f, -74.006f, modelMock
+    );
 
-    assertEquals("quantityrequest", viewName);
+    assertEquals("quantity-request", viewName);
+    verify(modelMock).addAttribute("listingId", 1);
+    verify(modelMock).addAttribute("foodType", "Bread");
+    verify(modelMock).addAttribute("quantityListed", 10);
+    verify(modelMock).addAttribute("formattedPickUpTime", "2024-12-01 12:00");
+    verify(modelMock).addAttribute("latitude", 40.7128f);
+    verify(modelMock).addAttribute("longitude", -74.006f);
   }
 
   @Test
-  void testFoodRequest() {
+  void testSubmitRequest() {
     MainController mainControllerMock = mock(MainController.class);
     RouteController routeController = new RouteController();
     routeController.setMainController(mainControllerMock);
 
-    List<FoodListing> mockListings = new ArrayList<>();
-    FoodListing listing = new FoodListing();
-    listing.setFoodType("Bread");
-    listing.setQuantityListed(10);
-    listing.setLatitude(40.7128f);
-    listing.setLongitude(-74.006f);
-    mockListings.add(listing);
+    String viewName = routeController.submitRequest(1, 5);
 
-    when(mainControllerMock.getFoodListings()).thenReturn(mockListings);
-
-    String viewName = routeController.foodRequest();
-
-    assertEquals("food-request", viewName);
-    verify(mainControllerMock, times(1)).getFoodListings();
-  }
-
-  @Test
-  void testFoodRequestWithNoListings() {
-    MainController mainControllerMock = mock(MainController.class);
-    RouteController routeController = new RouteController();
-    routeController.setMainController(mainControllerMock);
-
-    when(mainControllerMock.getFoodListings()).thenReturn(new ArrayList<>());
-
-    String viewName = routeController.foodRequest();
-
-    assertEquals("food-request", viewName);
-    verify(mainControllerMock, times(1)).getFoodListings();
+    assertEquals("submit-request", viewName);
+    verify(mainControllerMock, times(1)).fulfillRequest(8, 1, 5);
   }
 }

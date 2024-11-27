@@ -1,4 +1,5 @@
 package com.coms4156.client;
+import com.coms4156.client.model.UserAuthentication;
 import com.google.gson.JsonObject;
 import java.net.URL;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,6 @@ public class UserAuthenticationTests {
     assertEquals(true, result.get("success").getAsBoolean());
     assertEquals("Log-in successful!", result.get("message").getAsString());
   }
-
   @Test
   void testAuthenticateUserUnknownError() throws Exception {
     // Mock unknown error response
@@ -78,6 +78,10 @@ public class UserAuthenticationTests {
     JsonObject mockResponse = new JsonObject();
     mockResponse.addProperty("responseCode", HttpURLConnection.HTTP_INTERNAL_ERROR);
 
+    // Add an empty "responseBody" to prevent NullPointerException
+    JsonObject responseBody = new JsonObject();
+    mockResponse.add("responseBody", responseBody);
+
     doReturn(mockResponse).when(userAuth).getFirebaseResponse(mockConnection);
 
     JsonObject result = userAuth.authenticateUser("testUser", "testPassword");
@@ -86,5 +90,7 @@ public class UserAuthenticationTests {
     assertEquals("Unknown error occurred during authentication.",
         result.get("message").getAsString());
   }
+
+
 
 }

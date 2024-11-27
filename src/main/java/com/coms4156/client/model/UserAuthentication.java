@@ -88,8 +88,14 @@ public class UserAuthentication {
             result.addProperty("success", true);
             result.addProperty("message", "Log-in successful!");
         } else {
-            result.addProperty("success", false);
             JsonObject responseBody = response.get("responseBody").getAsJsonObject();
+            if (responseBody == null || !responseBody.has("error")) {
+                result.addProperty("success", false);
+                result.addProperty("message", "Unknown error occurred during authentication.");
+                return result;
+            }
+
+            result.addProperty("success", false);
             JsonObject err = responseBody.get("error").getAsJsonObject();
             // Since we use username instead of email,
             // change error message returned by Firebase Authentication accordingly
@@ -115,7 +121,7 @@ public class UserAuthentication {
      *         if the connection's input or error stream cannot be accessed or read.
      *
      */
-    private HttpURLConnection registerUserWithFirebase(String email, String password)
+    public HttpURLConnection registerUserWithFirebase(String email, String password)
         throws IOException {
         URL url = new URL("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" +
                           WEB_API_KEY);
@@ -132,7 +138,7 @@ public class UserAuthentication {
      * @throws IOException If an I/O error occurs while opening the connection or sending the
      *     request.
      */
-    private HttpURLConnection authenticateUserWithFirebase(String email, String password)
+    public HttpURLConnection authenticateUserWithFirebase(String email, String password)
         throws IOException {
         URL url =
             new URL("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
@@ -152,7 +158,7 @@ public class UserAuthentication {
      * @throws IOException If an I/O error occurs while opening the connection or writing the
      *     request body.
      */
-    private HttpURLConnection getHttpURLConnection(String email, String password, URL url)
+    public HttpURLConnection getHttpURLConnection(String email, String password, URL url)
         throws IOException {
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         conn.setDoOutput(true);
@@ -182,7 +188,7 @@ public class UserAuthentication {
      * @throws IOException If an I/O error occurs while reading the response stream or
      *         retrieving the HTTP response code.
      */
-    private JsonObject getFirebaseResponse(HttpURLConnection conn) throws IOException {
+    public JsonObject getFirebaseResponse(HttpURLConnection conn) throws IOException {
         JsonObject response = new JsonObject();
         response.addProperty("responseCode", conn.getResponseCode());
 

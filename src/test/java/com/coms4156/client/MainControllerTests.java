@@ -2,8 +2,9 @@ package com.coms4156.client;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.coms4156.client.FoodListing;
-import com.coms4156.client.FoodRequest;
+import com.coms4156.client.controller.MainController;
+import com.coms4156.client.model.FoodListing;
+import com.coms4156.client.model.FoodRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
