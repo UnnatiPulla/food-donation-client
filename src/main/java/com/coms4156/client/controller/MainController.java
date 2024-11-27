@@ -1,11 +1,12 @@
-package com.coms4156.client;
+package com.coms4156.client.controller;
 
+import com.coms4156.client.model.FoodListing;
+import com.coms4156.client.model.FoodRequest;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Service

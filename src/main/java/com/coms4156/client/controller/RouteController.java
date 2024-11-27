@@ -1,5 +1,6 @@
-package com.coms4156.client;
+package com.coms4156.client.controller;
 
+import com.coms4156.client.model.FoodListing;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

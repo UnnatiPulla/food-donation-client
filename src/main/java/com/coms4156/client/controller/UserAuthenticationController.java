@@ -1,5 +1,6 @@
-package com.coms4156.client;
+package com.coms4156.client.controller;
 
+import com.coms4156.client.model.UserAuthentication;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;

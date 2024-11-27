@@ -1,4 +1,4 @@
-package com.coms4156.client;
+package com.coms4156.client.model;
 
 import java.time.LocalDateTime;
 
