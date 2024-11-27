@@ -3,6 +3,7 @@ package com.coms4156.client;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ public class MainController {
     private final RestTemplate restTemplate;
 
     public MainController(RestTemplate restTemplate) {
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         this.restTemplate = restTemplate;
     }
 
@@ -34,4 +36,9 @@ public class MainController {
         return response;
     }
 
+    public FoodRequest fulfillRequest(int clientId, int listingId, int quantityRequested) {
+        String url = String.format("http://34.85.143.68:8080/fulfillRequest?clientId=8&listingId=%d&quantityRequested=%d", listingId, quantityRequested);
+        FoodRequest response = restTemplate.patchForObject(url, null, FoodRequest.class);
+        return response;
+    }
 }

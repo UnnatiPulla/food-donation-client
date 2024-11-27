@@ -57,15 +57,14 @@ public class RouteController {
         return "quantityrequest";
     }
 
-    @GetMapping("/food-request")
-    public String foodRequest() {
-        List<FoodListing> listings = mainController.getFoodListings();
-        for (FoodListing l : listings) {
-            System.out.println(l.getFoodType() + " " + l.getQuantityListed() + " " +
-                               l.getEarliestPickUpTime() + " " + l.getLatitude() + " " +
-                               l.getLongitude());
-        }
-
-        return "food-request";
+    @PostMapping("/submit-request")
+    public String submitRequest(
+            @RequestParam("listingId") int listingId,
+            @RequestParam("quantityRequested") int quantityRequested) {
+        // TODO: Move this to a Globals.java class.
+        int clientId = 8;
+        FoodRequest foodRequest = mainController.fulfillRequest(clientId, listingId, quantityRequested);
+        System.out.println("listingId = " + listingId + ", quantityRequested = " + quantityRequested + ", " + foodRequest.getRequestId());
+        return "submit-request";
     }
 }
