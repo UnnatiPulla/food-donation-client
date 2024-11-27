@@ -3,7 +3,6 @@ package com.coms4156.client;
 import com.google.gson.JsonObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +15,6 @@ public class UserAuthenticationController {
 
   public UserAuthenticationController(UserAuthentication userAuthentication) {
     this.userAuthentication = userAuthentication;
-  }
-
-  @GetMapping("")
-  public String loginPage() {
-    return "login"; // Serve the login.html file from templates
   }
 
   @PostMapping("/register")
