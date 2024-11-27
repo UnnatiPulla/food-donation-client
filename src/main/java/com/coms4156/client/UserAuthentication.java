@@ -1,16 +1,18 @@
 package com.coms4156.client;
 
-import com.google.firebase.auth.AuthErrorCode;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Objects;
+
 import org.springframework.stereotype.Component;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Component
 public class UserAuthentication {
@@ -196,6 +198,74 @@ public class UserAuthentication {
 
     return response;
   }
+
+
+    /**
+     * Calls the `/create` endpoint of the service to create an account profile and retrieve the accountId.
+     *
+     * @param clientId    The ID of the client.
+     * @param accountType The type of the account (e.g., PROVIDER, RECIPIENT).
+     * @param phoneNumber The phone number associated with the account.
+     * @param name        The name of the account holder.
+     * @return A JsonObject containing:
+     *         - "success" (boolean): Whether the operation was successful.
+     *         - "accountId" (String): The generated account ID (on success).
+     *         - "message" (String): A message indicating success or failure.
+     * @throws IOException If there's an error during the HTTP request.
+     */
+    public JsonObject createAccountProfile(int clientId, String accountType, String phoneNumber, String name) throws IOException {
+        String endpoint = "/api/accountProfiles/create";
+        URL url = new URL("http://34.85.143.68:8080" + endpoint);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        String params = String.format(
+            "clientId=%d&accountType=%s&phoneNumber=%s&name=%s",
+            clientId,
+            URLEncoder.encode(accountType, "UTF-8"),
+            URLEncoder.encode(phoneNumber, "UTF-8"),
+            URLEncoder.encode(name, "UTF-8")
+        );
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(params.getBytes("UTF-8"));
+            os.flush();
+        }
+
+        // Read the response
+        int responseCode = conn.getResponseCode();
+
+		// System.out.println("Response code is " + responseCode);
+
+        InputStream responseStream = (responseCode >= HttpURLConnection.HTTP_BAD_REQUEST)
+                ? conn.getErrorStream() // Error response
+                : conn.getInputStream(); // Success response
+
+        JsonObject response = new JsonObject();
+        response.addProperty("responseCode", responseCode);
+
+        try (InputStreamReader isr = new InputStreamReader(responseStream, "UTF-8")) {
+            JsonObject responseBody = JsonParser.parseReader(isr).getAsJsonObject();
+
+            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                // Success
+                response.addProperty("success", true);
+                response.addProperty("accountId", responseBody.get("accountId").getAsString());
+            } else {
+                // Error
+                response.addProperty("success", false);
+                String errorMessage = responseBody.has("message")
+                        ? responseBody.get("message").getAsString()
+                        : "Failed to create account profile.";
+                response.addProperty("message", errorMessage);
+            }
+        }
+
+        return response;
+    }
 
   //===END HELPER METHODS===//
 }

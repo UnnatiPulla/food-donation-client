@@ -1,28 +1,19 @@
 package com.coms4156.client;
 
-import com.google.gson.JsonObject;
+import java.io.IOException;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.io.IOException;
 import org.springframework.http.ResponseEntity;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-
 import org.springframework.web.client.RestTemplate;
 
-import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.FirestoreClient;
+import com.google.gson.JsonObject;
 
 @SpringBootApplication
 public class App implements CommandLineRunner {
@@ -58,7 +49,10 @@ public class App implements CommandLineRunner {
         System.out.println(response.getBody().getRequestId());
 
         UserAuthentication userAuth = new UserAuthentication();
-        // Try to register a user
+        JsonObject responseaccount = userAuth.createAccountProfile(
+            8, "RECIPIENT", "1234567890", "John Doe");
+        System.out.println("Account created successfully! Account ID: " + responseaccount.get("accountId").getAsString());
+
         System.out.println("Registering a new user...");
         // Should fail: user already exists
         JsonObject regResult = userAuth.registerUser("TEST_USER2", "TEST_PW");
