@@ -51,4 +51,7 @@ public class RouteController {
 
         return "food-request";
     }
+  public void setMainController(MainController mainController) {
+    this.mainController = mainController;
+  }
 }
