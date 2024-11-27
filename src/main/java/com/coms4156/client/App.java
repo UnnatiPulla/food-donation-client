@@ -7,8 +7,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import org.springframework.http.ResponseEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
 import org.springframework.web.client.RestTemplate;
+
+import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 
 @SpringBootApplication
 public class App implements CommandLineRunner {
@@ -19,6 +33,14 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws IOException {
+        // Initialize Firebase. You need to have Default App Credentials by this point!
+        // https://cloud.google.com/docs/authentication/provide-credentials-adc
+        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+        FirebaseOptions options = new FirebaseOptions.Builder()
+            .setCredentials(credentials)
+            .setProjectId("food-sharing-service-438119")
+            .build();
+        FirebaseApp.initializeApp(options);
 
         System.out.println("Fetching all food listings:");
         MainController mainController = new MainController(restTemplate);
