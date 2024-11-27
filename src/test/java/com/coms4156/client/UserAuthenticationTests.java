@@ -1,10 +1,21 @@
 package com.coms4156.client;
 import com.coms4156.client.model.UserAuthentication;
 import com.google.gson.JsonObject;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import com.google.gson.JsonObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,13 +37,11 @@ public class UserAuthenticationTests {
     JsonObject result = userAuth.registerUser("", "testPassword");
 
     assertEquals(false, result.get("success").getAsBoolean());
-    assertEquals("Failed to register user: Username cannot be empty.",
-        result.get("message").getAsString());
+    assertEquals("Failed to register user: Username cannot be empty.", result.get("message").getAsString());
   }
 
   @Test
   void testRegisterUserFailure() throws Exception {
-    // Mock failed registration response
     doReturn(mockConnection).when(userAuth).registerUserWithFirebase(anyString(), anyString());
     when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
 
@@ -54,7 +63,6 @@ public class UserAuthenticationTests {
 
   @Test
   void testAuthenticateUserSuccess() throws Exception {
-    // Mock successful authentication response
     doReturn(mockConnection).when(userAuth).authenticateUserWithFirebase(anyString(), anyString());
     when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
 
@@ -69,16 +77,15 @@ public class UserAuthenticationTests {
     assertEquals(true, result.get("success").getAsBoolean());
     assertEquals("Log-in successful!", result.get("message").getAsString());
   }
+
   @Test
   void testAuthenticateUserUnknownError() throws Exception {
-    // Mock unknown error response
     doReturn(mockConnection).when(userAuth).authenticateUserWithFirebase(anyString(), anyString());
     when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_INTERNAL_ERROR);
 
     JsonObject mockResponse = new JsonObject();
     mockResponse.addProperty("responseCode", HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-    // Add an empty "responseBody" to prevent NullPointerException
     JsonObject responseBody = new JsonObject();
     mockResponse.add("responseBody", responseBody);
 
@@ -87,10 +94,28 @@ public class UserAuthenticationTests {
     JsonObject result = userAuth.authenticateUser("testUser", "testPassword");
 
     assertEquals(false, result.get("success").getAsBoolean());
-    assertEquals("Unknown error occurred during authentication.",
-        result.get("message").getAsString());
+    assertEquals("Unknown error occurred during authentication.", result.get("message").getAsString());
   }
 
+  @Test
+  void testGetHttpURLConnection() throws Exception {
+    URL mockUrl = new URL("https://mockurl.com");
+    HttpURLConnection connection = userAuth.getHttpURLConnection("email", "password", mockUrl);
 
+    assertEquals("POST", connection.getRequestMethod());
+    assertEquals("application/json", connection.getRequestProperty("Content-Type"));
+  }
 
+  @Test
+  void testGetFirebaseResponseSuccess() throws Exception {
+    when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
+
+    InputStream mockInputStream = new ByteArrayInputStream("{\"key\":\"value\"}".getBytes());
+    doReturn(mockInputStream).when(mockConnection).getInputStream();
+
+    JsonObject response = userAuth.getFirebaseResponse(mockConnection);
+
+    assertEquals(HttpURLConnection.HTTP_OK, response.get("responseCode").getAsInt());
+    assertEquals("value", response.get("responseBody").getAsJsonObject().get("key").getAsString());
+  }
 }
