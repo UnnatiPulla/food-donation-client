@@ -24,7 +24,17 @@
                 <label for="quantityRequested">Quantity to Request:</label>
                 <input type="number" class="form-control" id="quantityRequested" name="quantityRequested" required />
             </div>
+
+            <!-- We also pass lat/long so that we can navigate back to the original search. -->
+            <input type="hidden" name="latitude" th:value="${latitude}" />
+            <input type="hidden" name="longitude" th:value="${longitude}" />
             <button type="submit" class="btn btn-primary">Submit Request</button>
+        </form>
+
+        <form action="/search-results" method="get">
+            <input type="hidden" name="latitude" th:value="${latitude}" />
+            <input type="hidden" name="longitude" th:value="${longitude}" />
+            <button type="submit" class="btn btn-success">Back to Search</button>
         </form>
     </div>
 </body>
