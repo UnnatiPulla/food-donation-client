@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RouteController {
 
-    @Autowired private MainController mainController;
+    @Autowired private ServiceHelper serviceHelper;
 
     @GetMapping("/home")
     public String home() {
@@ -23,7 +23,7 @@ public class RouteController {
     @GetMapping("/search-results")
     public String searchResults(Model model, @RequestParam("latitude") float latitude,
                                 @RequestParam("longitude") float longitude) {
-        List<FoodListing> listings = mainController.getNearbyListings(latitude, longitude, 500);
+        List<FoodListing> listings = serviceHelper.getNearbyListings(latitude, longitude, 500);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         listings.forEach(listing -> {
             if (listing.getEarliestPickUpTime() != null) {
@@ -41,7 +41,6 @@ public class RouteController {
                                   @RequestParam("formattedPickUpTime") String formattedPickUpTime,
                                   @RequestParam("latitude") float latitude,
                                   @RequestParam("longitude") float longitude, Model model) {
-
         model.addAttribute("listingId", listingId);
         model.addAttribute("foodType", foodType);
         model.addAttribute("quantityListed", quantityListed);
@@ -55,10 +54,13 @@ public class RouteController {
 
     @PostMapping("/submit-request")
     public String submitRequest(@RequestParam("listingId") int listingId,
-                                @RequestParam("quantityRequested") int quantityRequested) {
-        // TODO: Move this to a Globals.java class.
-        int clientId = 8;
-        mainController.fulfillRequest(clientId, listingId, quantityRequested);
+                                @RequestParam("quantityRequested") int quantityRequested,
+                                @RequestParam("latitude") float latitude,
+                                @RequestParam("longitude") float longitude, Model model) {
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
+
+        serviceHelper.fulfillRequest(listingId, quantityRequested);
         return "submit-request";
     }
 
