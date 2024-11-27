@@ -1,5 +1,5 @@
 package com.coms4156.client;
-import com.coms4156.client.controller.MainController;
+import com.coms4156.client.controller.ServiceHelper;
 import com.coms4156.client.controller.RouteController;
 import com.coms4156.client.model.FoodListing;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,9 @@ public class RouteControllerTests {
 
   @Test
   void testSearchResults() {
-    MainController mainControllerMock = mock(MainController.class);
+    ServiceHelper mainControllerMock = mock(ServiceHelper.class);
     RouteController routeController = new RouteController();
-    routeController.setMainController(mainControllerMock);
+    routeController.setServiceHelper(mainControllerMock);
 
     List<FoodListing> mockListings = new ArrayList<>();
     FoodListing listing = new FoodListing();
@@ -48,9 +48,9 @@ public class RouteControllerTests {
 
   @Test
   void testSearchResultsWithEmptyListings() {
-    MainController mainControllerMock = mock(MainController.class);
+    ServiceHelper mainControllerMock = mock(ServiceHelper.class);
     RouteController routeController = new RouteController();
-    routeController.setMainController(mainControllerMock);
+    routeController.setServiceHelper(mainControllerMock);
 
     when(mainControllerMock.getNearbyListings(anyFloat(), anyFloat(), anyInt()))
         .thenReturn(new ArrayList<>());
@@ -82,13 +82,14 @@ public class RouteControllerTests {
 
   @Test
   void testSubmitRequest() {
-    MainController mainControllerMock = mock(MainController.class);
+    ServiceHelper mainControllerMock = mock(ServiceHelper.class);
     RouteController routeController = new RouteController();
-    routeController.setMainController(mainControllerMock);
+    routeController.setServiceHelper(mainControllerMock);
 
-    String viewName = routeController.submitRequest(1, 5);
+    Model modelMock = mock(Model.class);
+    String viewName = routeController.submitRequest(1, 5, 40.7128f, -74.006f, modelMock);
 
     assertEquals("submit-request", viewName);
-    verify(mainControllerMock, times(1)).fulfillRequest(8, 1, 5);
+    verify(mainControllerMock, times(1)).fulfillRequest(8, 5);
   }
 }
