@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,6 +42,8 @@ public class ServiceHelper {
             FoodListing[] listings =
                 restTemplate.getForObject(url.toString(), FoodListing[].class);
             return Arrays.asList(listings);
+        } catch (HttpClientErrorException ex) {
+            return Collections.emptyList();
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return Collections.emptyList();
@@ -61,6 +64,8 @@ public class ServiceHelper {
             FoodRequest foodRequest =
                 restTemplate.patchForObject(url.toString(), null, FoodRequest.class);
             return foodRequest;
+        } catch (HttpClientErrorException ex) {
+            return null;
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;
