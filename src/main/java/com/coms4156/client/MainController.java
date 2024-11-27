@@ -25,19 +25,29 @@ public class MainController {
     }
 
     public List<FoodListing> getNearbyListings(float latitude, float longitude, int maxDistance) {
-        String url = String.format("http://34.85.143.68:8080/getNearbyListings?clientId=8&latitude=%f&longitude=%f&maxDistance=%d", latitude, longitude, maxDistance);
+        String url = String.format(
+            "http://34.85.143.68:8080/"
+                + "getNearbyListings?clientId=8&latitude=%f&longitude=%f&maxDistance=%d",
+            latitude, longitude, maxDistance);
         FoodListing[] listings = restTemplate.getForObject(url, FoodListing[].class);
         return Arrays.asList(listings);
     }
 
-    public ResponseEntity<FoodRequest> createFoodRequest(int clientId, int accountId, int listingId, int quantityRequested) {
-        String url = String.format("http://34.85.143.68:8080/api/foodRequests/create?clientId=8&accountId=17&listingId=%d&quantityRequested=%d", listingId, quantityRequested);
-        ResponseEntity<FoodRequest> response = restTemplate.postForEntity(url, null, FoodRequest.class);
+    public ResponseEntity<FoodRequest> createFoodRequest(int clientId, int accountId,
+                                                         int listingId, int quantityRequested) {
+        String url =
+            String.format("http://34.85.143.68:8080/api/foodRequests/"
+                              + "create?clientId=8&accountId=17&listingId=%d&quantityRequested=%d",
+                          listingId, quantityRequested);
+        ResponseEntity<FoodRequest> response =
+            restTemplate.postForEntity(url, null, FoodRequest.class);
         return response;
     }
 
     public FoodRequest fulfillRequest(int clientId, int listingId, int quantityRequested) {
-        String url = String.format("http://34.85.143.68:8080/fulfillRequest?clientId=8&listingId=%d&quantityRequested=%d", listingId, quantityRequested);
+        String url = String.format(
+            "http://34.85.143.68:8080/fulfillRequest?clientId=8&listingId=%d&quantityRequested=%d",
+            listingId, quantityRequested);
         FoodRequest response = restTemplate.patchForObject(url, null, FoodRequest.class);
         return response;
     }

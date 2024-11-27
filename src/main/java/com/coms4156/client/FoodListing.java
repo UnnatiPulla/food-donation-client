@@ -3,7 +3,7 @@ package com.coms4156.client;
 import java.time.LocalDateTime;
 
 public class FoodListing {
-	private int listingId;
+    private int listingId;
     private String foodType;
     private int quantityListed;
     private LocalDateTime earliestPickUpTime;
@@ -11,6 +11,12 @@ public class FoodListing {
     private float longitude;
     private String formattedPickUpTime;
 
+    public int getListingId() {
+        return listingId;
+    }
+    public void setListingId(int listingId) {
+        this.listingId = listingId;
+    }
     public String getFoodType() {
         return foodType;
     }
@@ -31,11 +37,5 @@ public class FoodListing {
     }
     public float getLongitude() {
         return longitude;
-    }
-    public int getListingId() {
-        return listingId;
-    }
-    public void setListingId(int listingId) { 
-        this.listingId = listingId;
     }
 }

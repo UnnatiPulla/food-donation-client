@@ -163,7 +163,7 @@
         if (response.ok) {
             // Use the message field from the API response
             alert(result.message);
-            window.location.href = '/homescreen'; // Redirect on successful login
+            window.location.href = '/home'; // Redirect on successful login
         } else {
             // Show the message from the API response on failure
             alert(result.message || 'Login failed. Please try again.');

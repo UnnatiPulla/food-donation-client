@@ -35,7 +35,7 @@
                     <td th:text="${listing.formattedPickUpTime}"></td>
                     <td th:text="${listing.latitude + ', ' + listing.longitude}"></td>
 					<td>
-						<form action="/quantityrequest" method="post">
+						<form action="/quantity-request" method="post">
 							<input type="hidden" name="listingId" th:value="${listing.listingId}" />
 							<input type="hidden" name="foodType" th:value="${listing.foodType}" />
 							<input type="hidden" name="quantityListed" th:value="${listing.quantityListed}" />
@@ -56,12 +56,12 @@
     <script>
         // Function to handle listing selection
         function selectListing(listingId) {
-			window.location.href = "/quantityrequest?listingId=" + listingId;
+			window.location.href = "/quantity-request?listingId=" + listingId;
         }
 
         // Function to navigate back to the home screen
         function goBack() {
-            window.location.href = "/homescreen";
+            window.location.href = "/home";
         }
     </script>
 </body>
