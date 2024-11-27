@@ -61,4 +61,9 @@ public class RouteController {
         mainController.fulfillRequest(clientId, listingId, quantityRequested);
         return "submit-request";
     }
+
+    // Testing purposes
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 }

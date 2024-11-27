@@ -20,11 +20,22 @@ public class FoodListing {
     public String getFoodType() {
         return foodType;
     }
+
+    public void setFoodType(String foodType) {
+        this.foodType = foodType;
+    }
     public int getQuantityListed() {
         return quantityListed;
     }
+    public void setQuantityListed(int quantityListed) {
+        this.quantityListed = quantityListed;
+    }
     public LocalDateTime getEarliestPickUpTime() {
         return earliestPickUpTime;
+    }
+
+    public void setEarliestPickUpTime(LocalDateTime earliestPickUpTime) {
+        this.earliestPickUpTime = earliestPickUpTime;
     }
     public String getFormattedPickUpTime() {
         return formattedPickUpTime;
@@ -35,7 +46,14 @@ public class FoodListing {
     public float getLatitude() {
         return latitude;
     }
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
     public float getLongitude() {
         return longitude;
     }
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
 }
