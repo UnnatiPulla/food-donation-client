@@ -2,6 +2,17 @@
 Our app is designed to serve **homeless shelters and individuals** in need by providing a platform to browse "food listings" posted by restaurants, grocery stores, and other establishments with surplus food. 
 Without our app, this surplus food would likely go to waste, as there is no simple way for individuals to discover available resources or for establishments to share their excess food effectively.
 
+# Demo URL
+http://34.21.19.28:8080
+
+# How to build, run and test
+* To install the necessary dependencies: run `mvn clean install` with the working directory set to the one containing the `pom.xml` file
+* To run the app: `mvn spring-boot:run`
+* To run all tests: `mvn test`
+* To see the test coverage: `mvn jacoco:report` and open target/site/jacoco/index.html in a web browser
+* To run the style checker: `mvn checkstyle:check`
+* To do static analysis with PMD: `mvn pmd:check`
+
 # End-To-End testing 
 Before doing any end-to-end tests, follow these steps
 1. Do `mvn spring-boot:run` in a terminal with the client repository as the working directory
