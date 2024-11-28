@@ -1,9 +1,14 @@
 package com.coms4156.client.controller;
 
 import com.coms4156.client.model.FoodListing;
+import com.coms4156.client.model.FoodRequest;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,24 +52,25 @@ public class RouteController {
         model.addAttribute("formattedPickUpTime", formattedPickUpTime);
         model.addAttribute("latitude", latitude);
         model.addAttribute("longitude", longitude);
-
-        // Return the request page view
         return "quantity-request";
     }
 
     @PostMapping("/submit-request")
-    public String submitRequest(@RequestParam("listingId") int listingId,
-                                @RequestParam("quantityRequested") int quantityRequested,
-                                @RequestParam("latitude") float latitude,
-                                @RequestParam("longitude") float longitude, Model model) {
-        model.addAttribute("latitude", latitude);
-        model.addAttribute("longitude", longitude);
-
-        serviceHelper.fulfillRequest(listingId, quantityRequested);
-        return "submit-request";
+    public ResponseEntity<?>
+    submitRequest(@RequestParam("listingId") int listingId,
+                  @RequestParam("quantityRequested") int quantityRequested) {
+        FoodRequest foodRequest = serviceHelper.fulfillRequest(listingId, quantityRequested);
+        Map<String, Object> body = new HashMap<>();
+        if (foodRequest != null) {
+            body.put("message", "Successfully submitted.");
+            return new ResponseEntity<>(body, HttpStatus.OK);
+        } else {
+            body.put("error", "Failed to submit.");
+            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    // Testing purposes
+    // DEV: This is used for testing.
     public void setServiceHelper(ServiceHelper serviceHelper) {
         this.serviceHelper = serviceHelper;
     }
