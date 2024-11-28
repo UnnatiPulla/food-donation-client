@@ -12,7 +12,18 @@ Our app uses the _recipient_ endpoints of the service since our app is for those
 
 Our app utilizes the food listings API to find nearby food listings that a user can request food from. Then, a user can request a certain quantity of food using the food requests API.
 
-## End-To-End testing
+## Demo URL
+http://34.21.19.28:8080
+
+## How to build, run and test
+* To install the necessary dependencies: run `mvn clean install` with the working directory set to the one containing the `pom.xml` file
+* To run the app: `mvn spring-boot:run`
+* To run all tests: `mvn test`
+* To see the test coverage: `mvn jacoco:report` and open target/site/jacoco/index.html in a web browser
+* To run the style checker: `mvn checkstyle:check`
+* To do static analysis with PMD: `mvn pmd:check`
+
+# End-To-End testing 
 
 Before doing any end-to-end tests, follow these steps
 
