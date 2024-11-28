@@ -1,5 +1,8 @@
 package com.coms4156.client.model;
 
+/**
+ * Represents a food request from the service.
+ */
 public class FoodRequest {
     private int requestId;
     private int quantityRequested;
