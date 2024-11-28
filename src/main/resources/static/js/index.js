@@ -1,29 +1,34 @@
+const loginFormContainer = document.getElementById('loginFormContainer');
+const registerFormContainer = document.getElementById('registerFormContainer');
+const pageTitle = document.getElementById('page-title');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginUsernameInput = document.getElementById('login-username');
+const loginPasswordInput = document.getElementById('login-password');
+const registerUsernameInput = document.getElementById('register-username');
+const registerPasswordInput = document.getElementById('register-password');
+const alert = document.querySelector('#alert');
+const alertP = document.querySelector('#alert p');
+
 // Show register form
 function showRegister() {
-  document.getElementById('loginFormContainer').classList.remove('active');
-  document.getElementById('registerFormContainer').classList.add('active');
-  document.getElementById('page-title').innerText = 'Register';
-
-  // Clear fields in log in form
-  document.getElementById('loginForm').reset();
+  loginFormContainer.classList.remove('active');
+  registerFormContainer.classList.add('active');
+  pageTitle.innerText = 'Register';
+  loginForm.reset(); // Clear fields in form.
 }
 
 // Show log-in form
 function showLogin() {
-  document.getElementById('registerFormContainer').classList.remove('active');
-  document.getElementById('loginFormContainer').classList.add('active');
-  document.getElementById('page-title').innerText = 'Login';
-
-  // Clear fields in register form
-  document.getElementById('registerForm').reset();
+  registerFormContainer.classList.remove('active');
+  loginFormContainer.classList.add('active');
+  pageTitle.innerText = 'Login';
+  registerForm.reset(); // Clear fields in form.
 }
 
-// Log-in form
-document.getElementById('loginForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const username = document.getElementById('login-username').value;
-  const password = document.getElementById('login-password').value;
+async function loginCallback() {
+  const username = loginUsernameInput.value;
+  const password = loginPasswordInput.value;
 
   // Call backend API to authenticate user
   const response = await fetch('/login/authenticate', {
@@ -32,25 +37,29 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
   });
 
-  const result = await response.json(); // Parse the JSON response
+  const result = await response.json();
+
+  alert.style.display = 'block';
+  alert.classList.remove('alert-success', 'alert-danger');
+
   if (response.ok) {
-    // Use the message field from the API response
-    alert(result.message);
-    window.location.href = '/home'; // Redirect on successful login
+    alert.classList.add('alert-success');
+    alertP.innerText = result.message;
+
+    setTimeout(() => {
+      window.location.href = '/home';
+    }, 1000);
   } else {
-    // Show the message from the API response on failure
-    alert(result.message || 'Login failed. Please try again.');
-    // Clear fields
-    document.getElementById('loginForm').reset();
+    alert.classList.add('alert-danger');
+    alertP.innerText = result.message || 'Login failed. Please try again.';
+
+    loginForm.reset();
   }
-});
+}
 
-// Registration form
-document.getElementById('registerForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const username = document.getElementById('register-username').value;
-  const password = document.getElementById('register-password').value;
+async function registerCallback() {
+  const username = registerUsernameInput.value;
+  const password = registerPasswordInput.value;
 
   // Call backend API to register user
   const response = await fetch('/login/register', {
@@ -59,14 +68,29 @@ document.getElementById('registerForm').addEventListener('submit', async (event)
     body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
   });
 
-  const result = await response.json(); // Parse the JSON response
+  const result = await response.json();
+
+  alert.style.display = 'block';
+  alert.classList.remove('alert-success', 'alert-danger');
+
   if (response.ok) {
-    alert(result.message); // Display the success message
-    showLogin(); // Redirect to login after successful registration
+    alert.classList.add('alert-success');
+    alertP.innerText = result.message;
+
+    showLogin(); // Redirect to login after successful registration.
   } else {
-    // Display registration error message or default error in case of internal server error
-    alert(result.message || 'Registration failed. Please try again.');
-    // Clear fields
-    document.getElementById('registerForm').reset();
+    alert.classList.add('alert-danger');
+    alertP.innerText = result.message || 'Registration failed. Please try again.';
+
+    registerForm.reset();
   }
+}
+
+loginForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  loginCallback();
+});
+registerForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  registerCallback();
 });
