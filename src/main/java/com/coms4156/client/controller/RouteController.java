@@ -65,7 +65,7 @@ public class RouteController {
     }
 
     // Testing purposes
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setServiceHelper(ServiceHelper serviceHelper) {
+        this.serviceHelper = serviceHelper;
     }
 }
