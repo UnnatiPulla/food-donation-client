@@ -20,11 +20,21 @@ public class RouteController {
 
     @Autowired private ServiceHelper serviceHelper;
 
+    /**
+     * Connects to the /home page in /static/templates.
+     *
+     * @return The URL page as a string.
+     */
     @GetMapping("/home")
     public String home() {
         return "home";
     }
 
+    /**
+     * Connects to the /search-results page in /static/templates.
+     *
+     * @return The URL page as a string.
+     */
     @GetMapping("/search-results")
     public String searchResults(Model model, @RequestParam("latitude") float latitude,
                                 @RequestParam("longitude") float longitude) {
@@ -39,6 +49,11 @@ public class RouteController {
         return "search-results";
     }
 
+    /**
+     * Connects to the /quantity-request page in /static/templates.
+     *
+     * @return The URL page as a string.
+     */
     @PostMapping("/quantity-request")
     public String quantityRequest(@RequestParam("listingId") int listingId,
                                   @RequestParam("foodType") String foodType,
@@ -55,6 +70,12 @@ public class RouteController {
         return "quantity-request";
     }
 
+    /**
+     * An endpoint that submits the request to the service, then returns the result to the
+     * frontend.
+     *
+     * @return The URL page as a string.
+     */
     @PostMapping("/submit-request")
     public ResponseEntity<?>
     submitRequest(@RequestParam("listingId") int listingId,
