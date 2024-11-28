@@ -18,16 +18,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller responsible for handling user authentication-related endpoints.
+ * This class provides RESTful endpoints for user registration and authentication,
+ * and it uses Firestore for data persistence (i.e. so that users can register once
+ * in a session and use the same credential to authenticate themselves in a new session)
+ */
 @Controller
 @RequestMapping("/login")
 public class UserAuthenticationController {
 
     private final UserAuthentication userAuthentication;
 
+    /**
+     * Constructor for UserAuthenticationController.
+     *
+     * @param userAuthentication The user authentication instance used for handling registration
+     *                           and authentication logic.
+     */
     public UserAuthenticationController(UserAuthentication userAuthentication) {
         this.userAuthentication = userAuthentication;
     }
 
+    /**
+     * Endpoint for registering a new user with username `username` and password `password`.
+     *
+     * @param username The username for the new user
+     * @param password The password for the new user
+     * @return A ResponseEntity object containing a string representation of a JSON object
+     *          with success status and the ID of the new account created for the user
+     *          if registration was successful or an error message otherwise.
+     */
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestParam String username,
                                            @RequestParam String password) {
@@ -61,6 +82,16 @@ public class UserAuthenticationController {
         }
     }
 
+    /**
+     *  Endpoint for authenticating a user with the credentials
+     *  `username` and `password`.
+     *
+     * @param username The username that the user is attempting to authenticate with
+     * @param password The password that the user is attempting to authenticate with
+     * @return A ResponseEntity object containing a string representation of a JSON object
+     *          with success status and the user's account ID
+     *          if authentication was successful or an error message otherwise.
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<String> login(@RequestParam String username,
                                         @RequestParam String password) {

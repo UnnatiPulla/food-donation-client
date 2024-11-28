@@ -11,12 +11,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * A helper class for sending API requests to the service for
+ * finding nearby listings and creating requests for them.
+ */
 @Service
 public class ServiceHelper {
 
     private final RestTemplate restTemplate;
     private final UriComponentsBuilder uriBuilder;
 
+    /**
+     * Constructs a ServiceHelper instance with the given RestTemplate.
+     * Configures the RestTemplate and initializes the base URI to make
+     * API requests to the service.
+     *
+     * @param restTemplate the RestTemplate instance used to send API requests to the service.
+     */
     public ServiceHelper(RestTemplate restTemplate) {
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         this.restTemplate = restTemplate;
@@ -25,6 +36,16 @@ public class ServiceHelper {
             UriComponentsBuilder.newInstance().scheme("http").host("34.85.143.68").port(8080);
     }
 
+    /**
+     * Makes an API request to the service to find listings within `maxDistance`
+     * of a query location specified by (`latitude`, `longitude`).
+     *
+     * @param latitude The latitude of the query location
+     * @param longitude The longitude of the query location
+     * @param maxDistance Max distance to search for listings from the query location
+     * @return A list of food listings within `maxDistance` of the query location (`latitude`,
+     *         `longitude`)
+     */
     public List<FoodListing> getNearbyListings(float latitude, float longitude, int maxDistance) {
         try {
             URL url = uriBuilder.cloneBuilder()
@@ -45,6 +66,14 @@ public class ServiceHelper {
         }
     }
 
+    /**
+     * Makes an API request to the service to fulfill a request for a listing.
+     *
+     * @param listingId The ID of the listing used to fulfill the request
+     * @param quantityRequested The quantity of food being requested to fulfill
+     * @return A FoodRequest object containing details of the fulfilled request,
+     *         or null if an error occurs
+     */
     public FoodRequest fulfillRequest(int listingId, int quantityRequested) {
         try {
             URL url = uriBuilder.cloneBuilder()
