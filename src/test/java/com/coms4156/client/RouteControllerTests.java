@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 public class RouteControllerTests {
@@ -85,10 +87,8 @@ public class RouteControllerTests {
         RouteController routeController = new RouteController();
         routeController.setServiceHelper(mainControllerMock);
 
-        Model modelMock = mock(Model.class);
-        String viewName = routeController.submitRequest(1, 5, 40.7128f, -74.006f, modelMock);
-
-        assertEquals("submit-request", viewName);
+        ResponseEntity<?> responseEntity = routeController.submitRequest(1, 5);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         verify(mainControllerMock, times(1)).fulfillRequest(1, 5);
     }
 }

@@ -1,3 +1,11 @@
+.visible {
+  display: block;
+}
+
+.not-visible {
+  display: none;
+}
+
 /* Full-page centering */
 body, html {
     height: 100%;

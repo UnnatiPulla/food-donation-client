@@ -4,6 +4,7 @@
     <meta charset="ISO-8859-1">
     <title>Request Food Listing</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/quantity-request.css">
 </head>
 <body>
     <div class="container">
@@ -17,25 +18,30 @@
             <p><strong>Location:</strong> <span th:text="${latitude + ', ' + longitude}"></span></p>
         </div>
 
+        <div id="alert" class="alert not-visible">
+            <p></p>
+        </div>
+
         <!-- Form to submit the food request -->
-        <form action="/submit-request" method="post">
+        <form id="food-request-form">
             <input type="hidden" name="listingId" th:value="${listingId}" />
             <div class="form-group">
                 <label for="quantityRequested">Quantity to Request:</label>
                 <input type="number" class="form-control" id="quantityRequested" name="quantityRequested" required />
             </div>
-
-            <!-- We also pass lat/long so that we can navigate back to the original search. -->
-            <input type="hidden" name="latitude" th:value="${latitude}" />
-            <input type="hidden" name="longitude" th:value="${longitude}" />
             <button type="submit" class="btn btn-primary">Submit Request</button>
         </form>
 
-        <form action="/search-results" method="get">
-            <input type="hidden" name="latitude" th:value="${latitude}" />
-            <input type="hidden" name="longitude" th:value="${longitude}" />
-            <button type="submit" class="btn btn-success">Back to Search</button>
-        </form>
+        <button class="btn btn-success" onclick="goBackToSearch()">Back to Search</button>
     </div>
+
+    <!-- These define the Thymeleaf variables for use in external JavaScript. -->
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    const latitude = [[${latitude}]];
+    const longitude = [[${longitude}]];
+    /*]]>*/
+    </script>
+    <script src="js/quantity-request.js"></script>
 </body>
 </html>
