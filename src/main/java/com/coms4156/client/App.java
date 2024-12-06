@@ -25,5 +25,11 @@ public class App implements CommandLineRunner {
                                       .setProjectId("food-sharing-service-438119")
                                       .build();
         FirebaseApp.initializeApp(options);
+
+        if (FirebaseApp.getApps().isEmpty()) {
+            System.out.println("Error: Firebase is not initialized!");
+        } else {
+            System.out.println("Firebase is successfully initialized.");
+        }
     }
 }

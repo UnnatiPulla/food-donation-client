@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,12 +94,14 @@ public class UserAuthenticationController {
      *          if authentication was successful or an error message otherwise.
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<String> login(@RequestParam String username,
+    public ResponseEntity<?> login(@RequestParam String username,
                                         @RequestParam String password) {
+        Map<String, Object> body = new HashMap<>();
         try {
             JsonObject authResult = userAuthentication.authenticateUser(username, password);
             if (!authResult.get("success").getAsBoolean()) {
-                return ResponseEntity.status(400).body(authResult.toString());
+                body.put("message", "Failed to authenticate user.");
+                return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
             }
             Firestore db = FirestoreClient.getFirestore();
             DocumentReference docRef = db.collection("users").document(username);
@@ -111,20 +114,19 @@ public class UserAuthenticationController {
                 // System.out.println(accountIdLong);
                 if (accountIdLong != null) {
                     int accountId = accountIdLong.intValue();
-                    authResult.addProperty("accountId", accountId);
-                    return ResponseEntity.ok(authResult.toString());
+                    body.put("message", "Successfully logged in!");
+                    return new ResponseEntity<>(body, HttpStatus.OK);
                 } else {
-                    authResult.addProperty("success", false);
-                    authResult.addProperty("message", "Account ID not found for user.");
-                    return ResponseEntity.status(400).body(authResult.toString());
+                    body.put("message", "Account ID not found for user.");
+                    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
                 }
             } else {
-                authResult.addProperty("success", false);
-                authResult.addProperty("message", "User not found in Firestore.");
-                return ResponseEntity.status(400).body(authResult.toString());
+                body.put("message", "User not found in Firestore.");
+                return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
             }
         } catch (IOException | InterruptedException | ExecutionException e) {
-            return ResponseEntity.status(500).body("Server error: " + e.getMessage());
+            body.put("message", "Exception type: " + e.getClass().getSimpleName() + ", message: " + e.getMessage());
+            return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
