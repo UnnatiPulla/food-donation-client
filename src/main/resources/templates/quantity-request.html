@@ -15,7 +15,7 @@
             <p><strong>Food Type:</strong> <span th:text="${foodType}"></span></p>
             <p><strong>Quantity:</strong> <span th:text="${quantityListed}"></span></p>
             <p><strong>Earliest Pickup Time:</strong> <span th:text="${formattedPickUpTime}"></span></p>
-            <p><strong>Location:</strong> <span th:text="${latitude + ', ' + longitude}"></span></p>
+            <p><strong>Location:</strong> <span th:text="${formattedAddress}"></span></p>
         </div>
 
         <div id="alert" class="alert not-visible">

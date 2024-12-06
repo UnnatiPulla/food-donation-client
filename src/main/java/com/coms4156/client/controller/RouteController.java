@@ -66,12 +66,14 @@ public class RouteController {
                                   @RequestParam("foodType") String foodType,
                                   @RequestParam("quantityListed") int quantityListed,
                                   @RequestParam("formattedPickUpTime") String formattedPickUpTime,
+                                  @RequestParam("formattedAddress") String formattedAddress,
                                   @RequestParam("latitude") float latitude,
                                   @RequestParam("longitude") float longitude, Model model) {
         model.addAttribute("listingId", listingId);
         model.addAttribute("foodType", foodType);
         model.addAttribute("quantityListed", quantityListed);
         model.addAttribute("formattedPickUpTime", formattedPickUpTime);
+        model.addAttribute("formattedAddress", formattedAddress);
         model.addAttribute("latitude", latitude);
         model.addAttribute("longitude", longitude);
         return "quantity-request";

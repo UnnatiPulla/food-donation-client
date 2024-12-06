@@ -94,8 +94,7 @@ public class UserAuthenticationController {
      *          if authentication was successful or an error message otherwise.
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<?> login(@RequestParam String username,
-                                        @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         Map<String, Object> body = new HashMap<>();
         try {
             JsonObject authResult = userAuthentication.authenticateUser(username, password);
@@ -111,10 +110,10 @@ public class UserAuthenticationController {
 
             if (document.exists()) {
                 Long accountIdLong = document.getLong("accountId");
-                // System.out.println(accountIdLong);
                 if (accountIdLong != null) {
                     int accountId = accountIdLong.intValue();
                     body.put("message", "Successfully logged in!");
+                    body.put("accountId", accountId);
                     return new ResponseEntity<>(body, HttpStatus.OK);
                 } else {
                     body.put("message", "Account ID not found for user.");
@@ -125,7 +124,8 @@ public class UserAuthenticationController {
                 return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
             }
         } catch (IOException | InterruptedException | ExecutionException e) {
-            body.put("message", "Exception type: " + e.getClass().getSimpleName() + ", message: " + e.getMessage());
+            body.put("message", "Exception type: " + e.getClass().getSimpleName() +
+                                    ", message: " + e.getMessage());
             return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

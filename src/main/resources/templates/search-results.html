@@ -37,6 +37,7 @@
 							<input type="hidden" name="foodType" th:value="${listing.foodType}" />
 							<input type="hidden" name="quantityListed" th:value="${listing.quantityListed}" />
 							<input type="hidden" name="formattedPickUpTime" th:value="${listing.formattedPickUpTime}" />
+                            <input type="hidden" name="formattedAddress" th:value="${listing.formattedAddress}" />
 							<input type="hidden" name="latitude" th:value="${listing.latitude}" />
 							<input type="hidden" name="longitude" th:value="${listing.longitude}" />
 							<button type="submit" class="btn btn-success">Select</button>
@@ -51,11 +52,6 @@
     </div>
 
     <script>
-        // Function to handle listing selection
-        function selectListing(listingId) {
-			window.location.href = "/quantity-request?listingId=" + listingId;
-        }
-
         // Navigate back to the home screen.
         function goBack() {
             window.location.href = "/home";
