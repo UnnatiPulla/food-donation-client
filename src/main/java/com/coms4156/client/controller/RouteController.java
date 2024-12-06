@@ -4,6 +4,7 @@ import com.coms4156.client.model.FoodListing;
 import com.coms4156.client.model.FoodRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,16 @@ public class RouteController {
                                 @RequestParam("longitude") float longitude) {
         List<FoodListing> listings = serviceHelper.getNearbyListings(latitude, longitude, 500);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         listings.forEach(listing -> {
             if (listing.getEarliestPickUpTime() != null) {
                 listing.setFormattedPickUpTime(listing.getEarliestPickUpTime().format(formatter));
             }
+
+            float lat = listing.getLatitude();
+            float lng = listing.getLongitude();
+            String address = serviceHelper.geoencode(lat, lng);
+            listing.setFormattedAddress(address);
         });
         model.addAttribute("foodListings", listings);
         return "search-results";

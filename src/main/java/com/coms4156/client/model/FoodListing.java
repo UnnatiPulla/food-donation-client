@@ -15,6 +15,10 @@ public class FoodListing {
     private float longitude;
     private String formattedPickUpTime;
 
+    // This isn't part of the schema. We have this field so we can pass it to the Thymeleaf
+    // template.
+    private String formattedAddress;
+
     /**
      * Gets the unique ID of the food listing.
      *
@@ -139,5 +143,23 @@ public class FoodListing {
      */
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    /**
+     * Gets the formatted address of the food listing's location.
+     *
+     * @return the formatted address.
+     */
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    /**
+     * Sets the formatted address of the food listing's location.
+     *
+     * @param formattedAddress the formatted address to set.
+     */
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
     }
 }
