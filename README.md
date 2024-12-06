@@ -13,7 +13,7 @@ Our app uses the _recipient_ endpoints of the service since our app is for those
 Our app utilizes the food listings API to find nearby food listings that a user can request food from. Then, a user can request a certain quantity of food using the food requests API.
 
 ## Demo URL
-http://34.21.19.28:8080
+http://35.230.167.49:8081
 
 ## How to build, run and test
 * To install the necessary dependencies: run `mvn clean install` with the working directory set to the one containing the `pom.xml` file
