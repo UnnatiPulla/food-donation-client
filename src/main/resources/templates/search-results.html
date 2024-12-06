@@ -30,7 +30,7 @@
                     <td th:text="${listing.foodType}"></td>
                     <td th:text="${listing.quantityListed}"></td>
                     <td th:text="${listing.formattedPickUpTime}"></td>
-                    <td th:text="${listing.latitude + ', ' + listing.longitude}"></td>
+                    <td th:text="${listing.formattedAddress}"></td>
 					<td>
 						<form action="/quantity-request" method="post">
 							<input type="hidden" name="listingId" th:value="${listing.listingId}" />

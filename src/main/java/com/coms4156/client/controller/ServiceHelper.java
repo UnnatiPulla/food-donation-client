@@ -2,6 +2,8 @@ package com.coms4156.client.controller;
 
 import com.coms4156.client.model.FoodListing;
 import com.coms4156.client.model.FoodRequest;
+import com.coms4156.client.model.Geocoding;
+import com.coms4156.client.model.GeocodingResult;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -89,6 +92,42 @@ public class ServiceHelper {
                 restTemplate.patchForObject(url.toString(), null, FoodRequest.class);
             return foodRequest;
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Call the Google Maps Geocoding API and return the first formatted address.
+     * 
+     */
+    public String geoencode(float latitude, float longitude) {
+        try {
+            UriComponentsBuilder googleMapsUriBuilder = UriComponentsBuilder.newInstance()
+                                                            .scheme("https")
+                                                            .host("maps.googleapis.com")
+                                                            .path("/maps/api/geocode/json");
+            URL url = googleMapsUriBuilder.cloneBuilder()
+                          .queryParam("latlng", "" + latitude + "," + longitude)
+                          .queryParam("key", "AIzaSyCIHb3bdQxJR1FlpiCdCwE4YZhPZj1E4to")
+                          .build()
+                          .toUri()
+                          .toURL();
+
+            Geocoding geocoding = restTemplate.getForObject(url.toString(), Geocoding.class);
+            if (geocoding == null) {
+                return null;
+            }
+
+            List<GeocodingResult> results = geocoding.getResults();
+            if (!results.isEmpty()) {
+                var result = results.get(0);
+                return result.getFormattedAddress();
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("ServiceHelper.geoencode() error: " + e.getMessage() +
+                               ", exception type: " + e.getClass().getSimpleName());
             return null;
         }
     }
