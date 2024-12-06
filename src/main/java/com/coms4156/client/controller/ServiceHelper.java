@@ -33,7 +33,7 @@ public class ServiceHelper {
         this.restTemplate = restTemplate;
 
         this.uriBuilder =
-            UriComponentsBuilder.newInstance().scheme("http").host("34.85.143.68").port(8080);
+            UriComponentsBuilder.newInstance().scheme("http").host("34.48.131.233").port(8080);
     }
 
     /**
