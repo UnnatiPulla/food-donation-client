@@ -222,7 +222,7 @@ public class UserAuthentication {
     public JsonObject createAccountProfile(int clientId, String accountType, String phoneNumber,
                                            String name) throws IOException {
         String endpoint = "/api/accountProfiles/create";
-        URL url = new URL("http://34.48.131.233:8080" + endpoint);
+        URL url = new URL("http://34.85.130.160:8080" + endpoint);
 
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         conn.setDoOutput(true);
